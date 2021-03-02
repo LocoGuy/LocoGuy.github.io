@@ -4,7 +4,7 @@
   function AppendTextToParaCoinPrices(textToAppend)
    {
        var currentText = document.getElementById("paraCoinPrices").innerText;
-       document.getElementById("paraCoinPrices").innerText = textToAppend;
+       document.getElementById("paraCoinPrices").innerText = currentText + textToAppend;
    }
 
 
@@ -35,7 +35,6 @@
         return coinPrice;
     }
 
-    //async function GetCryptoInfos(selectedCoins, currencies)
     async function GetCryptoInfos()
     {
         var currencies = ["chf"]; 
@@ -63,32 +62,24 @@
         var totalPrice = 0;
         currencies.forEach(currencyElement => 
         {     
-                //AppendTextToParaCoinPrices("Prices in " + currencyElement.toUpperCase() + " " + today.toLocaleString());
-
                 selectedCoins.forEach(coinElement => 
                 {
-                    console.log(coinElement + "Amount");
-                    console.log(coinElement + "Value");
+                    #console.log(coinElement + "Amount");
+                    #console.log(coinElement + "Value");
                     var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
                     var coinAmount = document.getElementById(coinElement + "Amount");
-                    console.log(coinAmount);
+                    #console.log(coinAmount);
                     var coinValue = document.getElementById(coinElement + "Value");
                     var coinValueCalc = coinAmount.innerText * coinPrice;
                     var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
                     coinValue.innerText = coinValueCalc2 + " CHF";
-
-                    if(coinElement == "havven")
-                        coinElement = "snx";
-
-                        totalPrice += coinValueCalc;
-                        //AppendTextToParaCoinPrices(coinElement + " - " + coinPrice);
+                   
+                    totalPrice += coinValueCalc;                        
                 });
-                
-                //AppendTextToParaCoinPrices("");
         });
 
+            ClearParaCoinPrices();
             AppendTextToParaCoinPrices("SUMME: " + parseFloat(totalPrice).toFixed(2) + 'CHF');
-
     }
 
     async function RunMainScript()
@@ -99,9 +90,8 @@
 </script>
 <html>
     <body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;"
-    onload="javascript:RunMainScript()"
-    >
-        <h1>GetCryptoInfos</h1>
+    onload="javascript:RunMainScript()">
+        <h1></h1>
         <p>
            <button type="submit" onclick="javascript:RunMainScript()">Refresh</button>
             <div id='mainDiv'>
