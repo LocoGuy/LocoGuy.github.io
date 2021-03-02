@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<script type="text/javascript" language="javascript">
+  
+  function AppendTextToParaCoinPrices(textToAppend)
+   {
+       var currentText = document.getElementById("paraCoinPrices").innerText;
+       document.getElementById("paraCoinPrices").innerText = textToAppend;
+   }
+
+
+   function ClearParaCoinPrices()
+   {
+       document.getElementById("paraCoinPrices").innerText = "";
+   }
+
+   async function CallApiUrlAndGetJson(apiUrl) 
+   {
+       //console.log(apiUrl);
+       let response = await fetch(apiUrl);
+       if (response.ok)
+       {
+            let json = await response.json();
+            return json;
+        } 
+        else 
+        {
+            alert("HTTP-Error: " + response.status);
+        }
+        return "";
+    }
+
+    function GetPrice2(json, coinInfo, currency)
+    {
+        var coinPrice = json[coinInfo][currency];
+        return coinPrice;
+    }
+
+    //async function GetCryptoInfos(selectedCoins, currencies)
+    async function GetCryptoInfos()
+    {
+        var currencies = ["chf"]; 
+
+        var selectedCoins = 
+        [
+            "ethereum"
+            ,"chainlink"
+            ,"polkadot"
+            ,"energy-web-token"
+            ,"ocean-protocol"
+            ,"origintrail"
+            ,"havven" //snx
+        ]; 
+        
+        var apiCoins = selectedCoins.join("%2C");
+        var apiCurrencies = currencies.join("%2C");
+        var apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=' + apiCoins + '&vs_currencies=' + apiCurrencies;
+
+        var jsonData = await CallApiUrlAndGetJson(apiUrl);
+
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+
+        var totalPrice = 0;
+        currencies.forEach(currencyElement => 
+        {     
+                //AppendTextToParaCoinPrices("Prices in " + currencyElement.toUpperCase() + " " + today.toLocaleString());
+
+                selectedCoins.forEach(coinElement => 
+                {
+                    console.log(coinElement + "Amount");
+                    console.log(coinElement + "Value");
+                    var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
+                    var coinAmount = document.getElementById(coinElement + "Amount");
+                    console.log(coinAmount);
+                    var coinValue = document.getElementById(coinElement + "Value");
+                    var coinValueCalc = coinAmount.innerText * coinPrice;
+                    var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
+                    coinValue.innerText = coinValueCalc2 + " CHF";
+
+                    if(coinElement == "havven")
+                        coinElement = "snx";
+
+                        totalPrice += coinValueCalc;
+                        //AppendTextToParaCoinPrices(coinElement + " - " + coinPrice);
+                });
+                
+                //AppendTextToParaCoinPrices("");
+        });
+
+            AppendTextToParaCoinPrices("SUMME: " + parseFloat(totalPrice).toFixed(2) + 'CHF');
+
+    }
+
+    async function RunMainScript()
+    {
+        await GetCryptoInfos();
+    }
+
+</script>
+<html>
+    <body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;"
+    onload="javascript:RunMainScript()"
+    >
+        <h1>GetCryptoInfos</h1>
+        <p>
+           <button type="submit" onclick="javascript:RunMainScript()">Refresh</button>
+            <div id='mainDiv'>
+                 <div>
+                 <table>
+                     <th>Coin</th> <th>Amount</th><th>Value $</th>
+                        <tr>
+                            <td>LINK</td>
+                            <td id="chainlinkAmount">15.5</td>
+                            <td id="chainlinkValue"></td>
+                        </tr>
+                        <tr>
+                            <td>EWT</td>
+                            <td id="energy-web-tokenAmount">35.3130</td>
+                            <td id="energy-web-tokenValue"></td>
+                        </tr>
+                        <tr>
+                            <td>OCEAN</td>
+                            <td id="ocean-protocolAmount">189.2857</td>
+                            <td id="ocean-protocolValue"></td>
+                        </tr>
+                        <tr>
+                            <td>DOT</td>
+                            <td id="polkadotAmount">5.9595</td>
+                            <td id="polkadotValue"></td>
+                        </tr>
+                        <tr>
+                            <td>SNX</td>
+                            <td id="havvenAmount">13.7396</td>
+                            <td id="havvenValue"></td>
+                        </tr>
+                        <tr>
+                            <td>TRAC</td>
+                            <td id="origintrailAmount">452.5111</td>
+                            <td id="origintrailValue"></td>
+                        </tr>
+                        <tr>
+                            <td>ETH</td>
+                            <td id="ethereumAmount">0.0527</td>
+                            <td id="ethereumValue"></td>
+                        </tr>
+                 </table>
+                </div>
+                     <p id="paraCoinPrices" ></p>
+                 </div>
+        </p>
+    </body>
+</html>
