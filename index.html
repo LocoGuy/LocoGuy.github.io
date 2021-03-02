@@ -79,7 +79,7 @@
         });
 
             ClearParaCoinPrices();
-            AppendTextToParaCoinPrices("SUMME: " + parseFloat(totalPrice).toFixed(2) + 'CHF');
+            AppendTextToParaCoinPrices("Sum: " + parseFloat(totalPrice).toFixed(2) + 'CHF');
     }
 
     async function RunMainScript()
@@ -93,7 +93,7 @@
     onload="javascript:RunMainScript()">
         <h1></h1>
         <p>
-           <button type="submit" onclick="javascript:RunMainScript()">Refresh</button>
+           <button type="submit" onclick="javascript:RunMainScript()">Refresh prices</button>
             <div id='mainDiv'>
                  <div>
                  <table>
