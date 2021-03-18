@@ -84,9 +84,10 @@
             var sumValue = parseFloat(totalPrice).toFixed(2);
             AppendTextToParaCoinPrices("Sum: " + sumValue + " CHF");
       
-            var investment = 2116.93;
-            var percentageValue = (investment / sumValue * 100) - 100;
-            AppendTextToParaCoinPrices("Profit: " + parseFloat(percentageValue).toFixed(2) + " %");      
+            var investment = 1950;
+            var percentageValue = (sumValue / investment * 100) - 100;
+            AppendTextToParaCoinPrices("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %");
+            
     }
 
     async function RunMainScript()
