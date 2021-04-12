@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 
-<script type="text/javascript" language="javascript">
+<script>
   
   function AppendTextToParaCoinPrices(textToAppend)
    {
@@ -93,52 +93,58 @@
     {
         await GetCryptoInfos();
     }
-
 </script>
-<html>
-    <body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;" onload="javascript:RunMainScript()">
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Locis</title>
+</head>
+<body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;" onload="javascript:RunMainScript()">
         <h1></h1>
         <p>
            <button type="submit" onclick="javascript:RunMainScript()">Refresh prices</button>
             <div id='mainDiv'>
                  <div>
                  <table>
-                  <tr><th>Coin</th> <th>Amount</th><th>Value CHF</th>
+                   <tr>
+                     <th>Coin</th>
+                     <th>Amount</th>
+                     <th>Value CHF</th>
                    </tr>
-                        <tr>
-                            <td>LINK</td>
-                            <td id="chainlinkAmount">15.5</td>
-                            <td id="chainlinkValue"></td>
-                        </tr>
-                        <tr>
-                            <td>EWT</td>
-                            <td id="energy-web-tokenAmount">35.3130</td>
-                            <td id="energy-web-tokenValue"></td>
-                        </tr>
-                        <tr>
-                            <td>OCEAN</td>
-                            <td id="ocean-protocolAmount">190</td>
-                            <td id="ocean-protocolValue"></td>
-                        </tr>
-                        <tr>
-                            <td>DOT</td>
-                            <td id="polkadotAmount">15</td>
-                            <td id="polkadotValue"></td>
-                        </tr>
-                        <tr>
-                            <td>SNX</td>
-                            <td id="havvenAmount">13.8</td>
-                            <td id="havvenValue"></td>
-                        </tr>
-                        <tr>
-                            <td>ETH</td>
-                            <td id="ethereumAmount">0.0527</td>
-                            <td id="ethereumValue"></td>
-                        </tr>
-                 </table>
-                </div>
-                     <p id="paraCoinPrices" ></p>
-                 </div>
+                   <tr>
+                     <td>LINK</td>
+                     <td id="chainlinkAmount">15.5</td>
+                     <td id="chainlinkValue"></td>
+                   </tr>
+                   <tr>
+                     <td>EWT</td>
+                     <td id="energy-web-tokenAmount">35.3130</td>
+                     <td id="energy-web-tokenValue"></td>
+                   </tr>
+                   <tr>
+                    <td>OCEAN</td>
+                    <td id="ocean-protocolAmount">190</td>
+                    <td id="ocean-protocolValue"></td>
+                   </tr>
+                   <tr>
+                    <td>DOT</td>
+                    <td id="polkadotAmount">15</td>
+                    <td id="polkadotValue"></td>
+                   </tr>
+                   <tr>
+                    <td>SNX</td>
+                    <td id="havvenAmount">13.8</td>
+                    <td id="havvenValue"></td>
+                   </tr>
+                   <tr>
+                    <td>ETH</td>
+                    <td id="ethereumAmount">0.0527</td>
+                    <td id="ethereumValue"></td>
+                   </tr>
+           </table>
+          </div>
+               <p id="paraCoinPrices"></p>
+           </div>
         </p>
-    </body>
+</body>
 </html>
