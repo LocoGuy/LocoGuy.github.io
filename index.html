@@ -1,105 +1,104 @@
 <!DOCTYPE html>
-<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
-
-<script>
-  
-  function AppendTextToParaCoinPrices(textToAppend)
-   {
-       var currentText = document.getElementById("paraCoinPrices").innerText;
-       document.getElementById("paraCoinPrices").innerText = currentText + textToAppend;
-   }
-
-
-   function ClearParaCoinPrices()
-   {
-       document.getElementById("paraCoinPrices").innerText = "";
-   }
-
-   async function CallApiUrlAndGetJson(apiUrl) 
-   {
-       //console.log(apiUrl);
-       let response = await fetch(apiUrl);
-       if (response.ok)
-       {
-            let json = await response.json();
-            return json;
-        } 
-        else 
-        {
-            alert("HTTP-Error: " + response.status);
-        }
-        return "";
-    }
-
-    function GetPrice2(json, coinInfo, currency)
-    {
-        var coinPrice = json[coinInfo][currency];
-        return coinPrice;
-    }
-
-    async function GetCryptoInfos()
-    {
-        var currencies = ["chf"]; 
-
-        var selectedCoins = 
-        [
-            "ethereum"
-            ,"chainlink"
-            ,"polkadot"
-            ,"energy-web-token"
-            ,"ocean-protocol"
-            ,"havven" //snx
-        ]; 
-        
-        var apiCoins = selectedCoins.join("%2C");
-        var apiCurrencies = currencies.join("%2C");
-        var apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=' + apiCoins + '&vs_currencies=' + apiCurrencies;
-
-        var jsonData = await CallApiUrlAndGetJson(apiUrl);
-
-        const timeElapsed = Date.now();
-        const today = new Date(timeElapsed);
-
-        var totalPrice = 0;
-        currencies.forEach(currencyElement => 
-        {     
-                selectedCoins.forEach(coinElement => 
-                {
-                    //console.log(coinElement + "Amount");
-                    //console.log(coinElement + "Value");
-                    var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
-                    var coinAmount = document.getElementById(coinElement + "Amount");
-                    //console.log(coinAmount);
-                    var coinValue = document.getElementById(coinElement + "Value");
-                    var coinValueCalc = coinAmount.innerText * coinPrice;
-                    var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
-                    coinValue.innerText = coinValueCalc2 + " CHF";
-                   
-                    totalPrice += coinValueCalc;                        
-                });
-        });
-
-            ClearParaCoinPrices();
-            var sumValue = parseFloat(totalPrice).toFixed(2);
-            AppendTextToParaCoinPrices("Sum: " + sumValue + " CHF");
-      
-            var investment = 1950;
-            var percentageValue = (sumValue / investment * 100) - 100;
-            AppendTextToParaCoinPrices("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %");
-            
-    }
-
-    async function RunMainScript()
-    {
-        await GetCryptoInfos();
-    }
-</script>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <title>Locis</title>
+  <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 </head>
 <body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;" onload="javascript:RunMainScript()">
+  <script>
+
+    function AppendTextToParaCoinPrices(textToAppend)
+     {
+         var currentText = document.getElementById("paraCoinPrices").innerText;
+         document.getElementById("paraCoinPrices").innerText = currentText + textToAppend;
+     }
+
+
+     function ClearParaCoinPrices()
+     {
+         document.getElementById("paraCoinPrices").innerText = "";
+     }
+
+     async function CallApiUrlAndGetJson(apiUrl) 
+     {
+         //console.log(apiUrl);
+         let response = await fetch(apiUrl);
+         if (response.ok)
+         {
+              let json = await response.json();
+              return json;
+          } 
+          else 
+          {
+              alert("HTTP-Error: " + response.status);
+          }
+          return "";
+      }
+
+      function GetPrice2(json, coinInfo, currency)
+      {
+          var coinPrice = json[coinInfo][currency];
+          return coinPrice;
+      }
+
+      async function GetCryptoInfos()
+      {
+          var currencies = ["chf"]; 
+
+          var selectedCoins = 
+          [
+              "ethereum"
+              ,"chainlink"
+              ,"polkadot"
+              ,"energy-web-token"
+              ,"ocean-protocol"
+              ,"havven" //snx
+          ]; 
+
+          var apiCoins = selectedCoins.join("%2C");
+          var apiCurrencies = currencies.join("%2C");
+          var apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=' + apiCoins + '&vs_currencies=' + apiCurrencies;
+
+          var jsonData = await CallApiUrlAndGetJson(apiUrl);
+
+          const timeElapsed = Date.now();
+          const today = new Date(timeElapsed);
+
+          var totalPrice = 0;
+          currencies.forEach(currencyElement => 
+          {     
+                  selectedCoins.forEach(coinElement => 
+                  {
+                      //console.log(coinElement + "Amount");
+                      //console.log(coinElement + "Value");
+                      var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
+                      var coinAmount = document.getElementById(coinElement + "Amount");
+                      //console.log(coinAmount);
+                      var coinValue = document.getElementById(coinElement + "Value");
+                      var coinValueCalc = coinAmount.innerText * coinPrice;
+                      var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
+                      coinValue.innerText = coinValueCalc2 + " CHF";
+
+                      totalPrice += coinValueCalc;                        
+                  });
+          });
+
+              ClearParaCoinPrices();
+              var sumValue = parseFloat(totalPrice).toFixed(2);
+              AppendTextToParaCoinPrices("Sum: " + sumValue + " CHF");
+
+              var investment = 1950;
+              var percentageValue = (sumValue / investment * 100) - 100;
+              AppendTextToParaCoinPrices("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %");
+
+      }
+
+      async function RunMainScript()
+      {
+          await GetCryptoInfos();
+      }
+ </script>
         <h1></h1>
         <p>
            <button type="submit" onclick="javascript:RunMainScript()">Refresh prices</button>
