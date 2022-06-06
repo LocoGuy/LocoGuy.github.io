@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Locis</title>
+   <style>
+        body 
+        {
+            font-family: Open Sans;
+            background-color: #222;
+            color: #cb7832;
+        }
+        #coinTable
+        {
+            font-size: 120%;
+            font-weight: bolder;
+        }
+        #paraCoinPrices
+        {
+            color: #cb1234;
+            font-size: 100%;
+            
+        }
+    </style>
   <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
 </head>
 <body id='body' style="font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; font-size: large;" onload="javascript:RunMainScript()">
@@ -52,8 +71,7 @@
               ,"chainlink"
               ,"polkadot"
               ,"energy-web-token"
-              ,"ocean-protocol"
-              ,"havven" //snx
+              ,"ripple"
           ]; 
 
           var apiCoins = selectedCoins.join("%2C");
@@ -102,7 +120,7 @@
            <button type="submit" onclick="javascript:RunMainScript()">Refresh prices</button>
             <div id='mainDiv'>
                  <div>
-                 <table>
+                 <table id="coinTable">
                    <tr>
                      <th>Coin</th>
                      <th>Amount</th>
@@ -110,18 +128,18 @@
                    </tr>
                    <tr>
                      <td>LINK</td>
-                     <td id="chainlinkAmount">15.5</td>
+                     <td id="chainlinkAmount">15</td>
                      <td id="chainlinkValue"></td>
                    </tr>
                    <tr>
                      <td>EWT</td>
-                     <td id="energy-web-tokenAmount">35.3130</td>
+                     <td id="energy-web-tokenAmount">36</td>
                      <td id="energy-web-tokenValue"></td>
                    </tr>
                    <tr>
-                    <td>OCEAN</td>
-                    <td id="ocean-protocolAmount">190</td>
-                    <td id="ocean-protocolValue"></td>
+                    <td>XRP-Ripple</td>
+                    <td id="rippleAmount">470</td>
+                    <td id="rippleValue"></td>
                    </tr>
                    <tr>
                     <td>DOT</td>
@@ -129,13 +147,8 @@
                     <td id="polkadotValue"></td>
                    </tr>
                    <tr>
-                    <td>SNX</td>
-                    <td id="havvenAmount">13.8</td>
-                    <td id="havvenValue"></td>
-                   </tr>
-                   <tr>
                     <td>ETH</td>
-                    <td id="ethereumAmount">0.0527</td>
+                    <td id="ethereumAmount">0.053</td>
                     <td id="ethereumValue"></td>
                    </tr>
            </table>
