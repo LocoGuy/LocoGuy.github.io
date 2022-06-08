@@ -12,14 +12,22 @@
         }
         #coinTable
         {
+            font-family: Open Sans;
             font-size: 120%;
             font-weight: bolder;
         }
         #paraCoinPrices
         {
-            color: #cb1234;
-            font-size: 100%;
-            
+            font-family: Open Sans;
+            font-weight: bold;
+            text-decoration: underline;     
+            font-size: 120%;
+        }
+        #profitElement
+        {
+            font-family: Open Sans;
+            font-weight: bold;
+            font-size: 150%;
         }
     </style>
   <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
@@ -33,10 +41,22 @@
          document.getElementById("paraCoinPrices").innerText = currentText + textToAppend;
      }
 
+     function SetProfitLine(textToAppend, intValue)
+     {
+         var profitElement = document.getElementById("profitElement");
+         var currentText = profitElement.innerText;
+         profitElement.innerText = currentText + textToAppend;
+         profitElement.style.color = "green"
+         
+         if(intValue < 0)
+            profitElement.style.color = "red"
+     }
+
 
      function ClearParaCoinPrices()
      {
          document.getElementById("paraCoinPrices").innerText = "";
+         document.getElementById("profitElement").innerText = "";
      }
 
      async function CallApiUrlAndGetJson(apiUrl) 
@@ -108,8 +128,7 @@
 
               var investment = 1950;
               var percentageValue = (sumValue / investment * 100) - 100;
-              AppendTextToParaCoinPrices("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %");
-
+              SetProfitLine("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %",percentageValue);
       }
 
       async function RunMainScript()
@@ -117,7 +136,6 @@
           await GetCryptoInfos();
       }
  </script>
-           <button type="submit" onclick="javascript:RunMainScript()">Refresh prices</button>
             <div id='mainDiv'>
                  <div>
                  <table id="coinTable">
@@ -154,6 +172,10 @@
            </table>
           </div>
                <p id="paraCoinPrices"></p>
+               <p id="profitElement"></p>
            </div>
+           <button id="#buttonRefresh" type="submit" onclick="javascript:RunMainScript()">
+            <img src="refresh.png" height="50" width="50">
+            </button>
 </body>
 </html>
