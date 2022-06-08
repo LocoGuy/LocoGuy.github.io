@@ -116,7 +116,7 @@
                       var coinValue = document.getElementById(coinElement + "Value");
                       var coinValueCalc = coinAmount.innerText * coinPrice;
                       var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
-                      coinValue.innerText = coinValueCalc2 + " CHF";
+                      coinValue.innerText = coinValueCalc2;
 
                       totalPrice += coinValueCalc;                        
                   });
@@ -142,7 +142,7 @@
                    <tr>
                      <th>Coin</th>
                      <th>Amount</th>
-                     <th>Value CHF</th>
+                     <th>CHF-Value</th>
                    </tr>
                    <tr>
                      <td>LINK</td>
