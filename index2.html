@@ -1,179 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Locis</title>
-  <link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-  integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-  crossorigin="anonymous"
-/>
-  <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Locis</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
 
-  <style>
-    body {
+    <style>
+      body {
         background-color: #343a40;
         color: #fff;
-    }
-    .table-dark {
+      }
+      .table-dark {
         color: #fff;
         background-color: #343a40;
-    }
-</style>
-
-
-</head>
-<body onload="javascript:RunMainScript()">
-  <script>
-
-    function AppendTextToParaCoinPrices(textToAppend)
-     {
-         var currentText = document.getElementById("paraCoinPrices").innerText;
-         document.getElementById("paraCoinPrices").innerText = currentText + textToAppend;
-     }
-
-     function SetProfitLine(textToAppend, intValue)
-     {
-         var profitElement = document.getElementById("profitElement");
-         var currentText = profitElement.innerText;
-         profitElement.innerText = currentText + textToAppend;
-         profitElement.style.color = "green"
-         
-         if(intValue < 0)
-            profitElement.style.color = "red"
-     }
-
-
-     function ClearParaCoinPrices()
-     {
-         document.getElementById("paraCoinPrices").innerText = "";
-         document.getElementById("profitElement").innerText = "";
-     }
-
-     async function CallApiUrlAndGetJson(apiUrl) 
-     {
-         //console.log(apiUrl);
-         let response = await fetch(apiUrl);
-         if (response.ok)
-         {
-              let json = await response.json();
-              return json;
-          } 
-          else 
-          {
-              alert("HTTP-Error: " + response.status);
-          }
-          return "";
+      }
+    </style>
+  </head>
+  <body onload="javascript:RunMainScript()">
+    <script>
+      function AppendTextToParaCoinPrices(textToAppend) {
+        var currentText = document.getElementById("paraCoinPrices").innerText;
+        document.getElementById("paraCoinPrices").innerText =
+          currentText + textToAppend;
       }
 
-      function GetPrice2(json, coinInfo, currency)
-      {
-          var coinPrice = json[coinInfo][currency];
-          return coinPrice;
+      function SetProfitLine(textToAppend, intValue) {
+        var profitElement = document.getElementById("profitElement");
+        var currentText = profitElement.innerText;
+        profitElement.innerText = currentText + textToAppend;
+        profitElement.style.color = "green";
+
+        if (intValue < 0) profitElement.style.color = "red";
       }
 
-      async function GetCryptoInfos()
-      {
-          var currencies = ["chf"]; 
+      function ClearParaCoinPrices() {
+        document.getElementById("paraCoinPrices").innerText = "";
+        document.getElementById("profitElement").innerText = "";
+      }
 
-          var selectedCoins = 
-          [
-              "ethereum"
-              ,"chainlink"
-              ,"polkadot"
-              ,"energy-web-token"
-              ,"ripple"
-          ]; 
+      async function CallApiUrlAndGetJson(apiUrl) {
+        //console.log(apiUrl);
+        let response = await fetch(apiUrl);
+        if (response.ok) {
+          let json = await response.json();
+          return json;
+        } else {
+          alert("HTTP-Error: " + response.status);
+        }
+        return "";
+      }
 
-          var apiCoins = selectedCoins.join("%2C");
-          var apiCurrencies = currencies.join("%2C");
-          var apiUrl = 'https://api.coingecko.com/api/v3/simple/price?ids=' + apiCoins + '&vs_currencies=' + apiCurrencies;
+      function GetPrice2(json, coinInfo, currency) {
+        var coinPrice = json[coinInfo][currency];
+        return coinPrice;
+      }
 
-          var jsonData = await CallApiUrlAndGetJson(apiUrl);
+      function sleep(ms) {
+        return new Promise((resolve) => setTimeout(resolve, ms));
+      }
 
-          const timeElapsed = Date.now();
-          const today = new Date(timeElapsed);
+      async function GetCryptoInfos() {
+        var refreshButton = document.getElementById("refreshIcon");
+        refreshButton.classList.add("fa-spin");
 
-          var totalPrice = 0;
-          currencies.forEach(currencyElement => 
-          {     
-                  selectedCoins.forEach(coinElement => 
-                  {
-                      //console.log(coinElement + "Amount");
-                      //console.log(coinElement + "Value");
-                      var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
-                      var coinAmount = document.getElementById(coinElement + "Amount");
-                      //console.log(coinAmount);
-                      var coinValue = document.getElementById(coinElement + "Value");
-                      var coinValueCalc = coinAmount.innerText * coinPrice;
-                      var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
-                      coinValue.innerText = coinValueCalc2;
+        await sleep(2000);
 
-                      totalPrice += coinValueCalc;                        
-                  });
+        var currencies = ["chf"];
+
+        var selectedCoins = [
+          "ethereum",
+          "chainlink",
+          "polkadot",
+          "energy-web-token",
+          "ripple",
+        ];
+
+        var apiCoins = selectedCoins.join("%2C");
+        var apiCurrencies = currencies.join("%2C");
+        var apiUrl =
+          "https://api.coingecko.com/api/v3/simple/price?ids=" +
+          apiCoins +
+          "&vs_currencies=" +
+          apiCurrencies;
+
+        var jsonData = await CallApiUrlAndGetJson(apiUrl);
+
+        const timeElapsed = Date.now();
+        const today = new Date(timeElapsed);
+
+        var totalPrice = 0;
+        currencies.forEach((currencyElement) => {
+          selectedCoins.forEach((coinElement) => {
+            //console.log(coinElement + "Amount");
+            //console.log(coinElement + "Value");
+            var coinPrice = GetPrice2(jsonData, coinElement, currencyElement);
+            var coinAmount = document.getElementById(coinElement + "Amount");
+            //console.log(coinAmount);
+            var coinValue = document.getElementById(coinElement + "Value");
+            var coinValueCalc = coinAmount.innerText * coinPrice;
+            var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
+            coinValue.innerText = coinValueCalc2;
+
+            totalPrice += coinValueCalc;
           });
+        });
 
-              ClearParaCoinPrices();
-              var sumValue = parseFloat(totalPrice).toFixed(2);
-              AppendTextToParaCoinPrices("Sum: " + sumValue + " CHF");
+        ClearParaCoinPrices();
+        var sumValue = parseFloat(totalPrice).toFixed(2);
+        AppendTextToParaCoinPrices("Sum: " + sumValue + " CHF");
 
-              var investment = 1950;
-              var percentageValue = (sumValue / investment * 100) - 100;
-              SetProfitLine("\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %",percentageValue);
+        var investment = 1950;
+        var percentageValue = (sumValue / investment) * 100 - 100;
+        SetProfitLine(
+          "\nProfit: " + parseFloat(percentageValue).toFixed(2) + " %",
+          percentageValue
+        );
+
+        refreshButton.classList.remove("fa-spin");
       }
 
-      async function RunMainScript()
-      {
-          await GetCryptoInfos();
+      async function RunMainScript() {
+        await GetCryptoInfos();
       }
- </script>
-            <div id='mainDiv' class='container mt-3'>
-                <div class='table-responsive'>
-                    <table id="coinTable" class='table table-dark table-hover'>
-                        <thead>
-                            <tr>
-                                <th>Coin</th>
-                                <th>Amount</th>
-                                <th>CHF-Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>LINK</td>
-                                <td id="chainlinkAmount">15</td>
-                                <td id="chainlinkValue"></td>
-                            </tr>
-                            <tr>
-                                <td>EWT</td>
-                                <td id="energy-web-tokenAmount">36</td>
-                                <td id="energy-web-tokenValue"></td>
-                            </tr>
-                            <tr>
-                                <td>XRP</td>
-                                <td id="rippleAmount">300</td>
-                                <td id="rippleValue"></td>
-                            </tr>
-                            <tr>
-                                <td>DOT</td>
-                                <td id="polkadotAmount">15</td>
-                                <td id="polkadotValue"></td>
-                            </tr>
-                            <tr>
-                                <td>ETH</td>
-                                <td id="ethereumAmount">0.053</td>
-                                <td id="ethereumValue"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <p id="paraCoinPrices" class='text-white'></p>
-                <p id="profitElement" class='text-white'></p>
-            </div>
-            <div class="d-flex justify-content-center mt-3">
-                <button id="buttonRefresh" class='btn btn-primary' onclick="javascript:RunMainScript()">
-                    <img src="refresh.png" height="50" width="50">
-                </button>
-            </div>
-</body>
+    </script>
+    <div id="mainDiv" class="container mt-3">
+      <div class="table-responsive">
+        <table id="coinTable" class="table table-dark table-hover">
+          <thead>
+            <tr>
+              <th>Coin</th>
+              <th>Amount</th>
+              <th>CHF-Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LINK</td>
+              <td id="chainlinkAmount">15</td>
+              <td id="chainlinkValue"></td>
+            </tr>
+            <tr>
+              <td>EWT</td>
+              <td id="energy-web-tokenAmount">36</td>
+              <td id="energy-web-tokenValue"></td>
+            </tr>
+            <tr>
+              <td>XRP</td>
+              <td id="rippleAmount">300</td>
+              <td id="rippleValue"></td>
+            </tr>
+            <tr>
+              <td>DOT</td>
+              <td id="polkadotAmount">15</td>
+              <td id="polkadotValue"></td>
+            </tr>
+            <tr>
+              <td>ETH</td>
+              <td id="ethereumAmount">0.053</td>
+              <td id="ethereumValue"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p id="paraCoinPrices" class="text-white"></p>
+      <p id="profitElement" class="text-white"></p>
+    </div>
+    <div class="d-flex justify-content-center mt-3">
+      <button
+        id="buttonRefresh"
+        class="btn btn-md button-solid"
+        onclick="javascript:RunMainScript()"
+      >
+        <i id="refreshIcon" class="fa fa-refresh" style="color: #d9ff05;"></i>
+      </button>
+    </div>
+  </body>
 </html>
