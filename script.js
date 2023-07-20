@@ -76,7 +76,10 @@ function createCoinCard(coinData) {
 
   const img = document.createElement("img");
   img.src = coinData.imgUrl;
-  img.className = "card-img-top mx-auto coinImage mt-3";
+  img.className = "card-img-top mx-auto mt-3";
+  img.style.left = "50%"; 
+  img.style.width = "24px";
+  img.style.height = "24px";
 
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
