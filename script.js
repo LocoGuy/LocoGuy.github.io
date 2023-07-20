@@ -19,25 +19,25 @@ function initCoins() {
   });
 
   coins.push({
-    name: "XRP",
-    api: "ripple",
-    amount: 300,
-    imgUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/52.png",
-  });
-
-  coins.push({
     name: "DOT",
     api: "polkadot",
     amount: 15,
     imgUrl:
-      "https://assets.coingecko.com/coins/images/12171/small/polkadot.png",
+    "https://assets.coingecko.com/coins/images/12171/small/polkadot.png",
   });
-
+  
   coins.push({
     name: "ETH",
     api: "ethereum",
     amount: 0.053,
     imgUrl: "https://assets.coingecko.com/coins/images/279/small/ethereum.png",
+  });
+
+  coins.push({
+    name: "XRP",
+    api: "ripple",
+    amount: 300,
+    imgUrl: "https://s2.coinmarketcap.com/static/img/coins/64x64/52.png",
   });
 }
 
@@ -45,39 +45,44 @@ function initCards() {
   const coinsDiv = document.getElementById("card-group");
   coinsDiv.innerHTML = "";
 
-  coins.forEach((coinData) => {
+  for (var i = 0; i < coins.length; i += 2) {
+    var row = document.createElement("div");
+    row.className = "row justify-content-center";
+
+    // Fügen Sie zwei Karten hinzu (wenn es noch zwei gibt), ansonsten nur eine
+    for (var j = 0; j < 2 && i + j < coins.length; ++j) {
+      var coin = coins[i+j];
+      // Erstellen Sie die Karte
+      var col = document.createElement('div');
+      col.className = 'col-sm-6';
+
+      var coinCard = createCoinCard(coin);
+      /* Fügen Sie hier Ihren Karteninhalt hinzu, z. B. card.textContent = cards[i+j].text; */
+
+      // Fügen Sie die Karte zur Spalte und die Spalte zur Zeile hinzu
+      col.appendChild(coinCard);
+      row.appendChild(col);
+  }
+
+    // Fügen Sie die Zeile zum Container hinzu
+    coinsDiv.appendChild(row);
+  }
+
+  /*coins.forEach((coinData) => {
     const childDiv = createCoinCard(coinData);
     coinsDiv.appendChild(childDiv);
   });
-}
-
-function resetPriceValue(innerText, isRefresh) {
-  let pElements = document.getElementsByTagName("p");
-  //let selectedDivs = [];
-  for (let i = 0; i < pElements.length; i++) {
-    if (pElements[i].id.startsWith("coinPrice-")) {
-      //console.log(selectedDivs);
-      if(isRefresh)
-      {
-        pElements[i].innerHTML = "";
-        const spinner = document.createElement("i");  
-        spinner.className = "fa fa-spinner fa-spin"
-        pElements[i].appendChild(spinner);
-      }
-      //selectedDivs.push(divs[i]);
-    }
-  }
-  //console.log(selectedDivs);
+  */
 }
 
 function createCoinCard(coinData) {
   const cardDiv = document.createElement("div");
-  cardDiv.className = "card coin-card mb-3 text-center";
+  cardDiv.className = "card mt-3 text-center";
 
   const img = document.createElement("img");
   img.src = coinData.imgUrl;
   img.className = "card-img-top mx-auto mt-3";
-  img.style.left = "50%"; 
+  img.style.left = "50%";
   img.style.width = "24px";
   img.style.height = "24px";
 
@@ -105,6 +110,40 @@ function createCoinCard(coinData) {
   cardDiv.appendChild(cardPrice);
 
   return cardDiv;
+}
+
+
+function resetPriceValue(innerText, isRefresh) {
+  if (isRefresh) {
+    var spinner = document.createElement("i");
+    spinner.className = "fa fa-spinner fa-spin";
+
+    const paraCoinPrices = document.getElementById("paraCoinPrices");
+    paraCoinPrices.innerHTML = "";
+    paraCoinPrices.appendChild(spinner);
+
+    spinner = document.createElement("i");
+    spinner.className = "fa fa-spinner fa-spin";
+    const profitElement = document.getElementById("profitElement");
+    profitElement.innerHTML = "";
+    profitElement.appendChild(spinner);
+  }
+
+  let pElements = document.getElementsByTagName("p");
+  //let selectedDivs = [];
+  for (let i = 0; i < pElements.length; i++) {
+    if (pElements[i].id.startsWith("coinPrice-")) {
+      //console.log(selectedDivs);
+      if (isRefresh) {
+        pElements[i].innerHTML = "";
+        var spinner = document.createElement("i");
+        spinner.className = "fa fa-spinner fa-spin";
+        pElements[i].appendChild(spinner);
+      }
+      //selectedDivs.push(divs[i]);
+    }
+  }
+  //console.log(selectedDivs);
 }
 
 function SetProfitLine(text, intValue) {
@@ -175,10 +214,10 @@ async function GetCryptoInfos() {
     //console.log("coinPriceValue", coinPriceValue);
 
     var coinPriceElement = document.getElementById(`coinPrice-${coinElement}`);
-    //console.log("coinPriceElement", coinPriceElement);
+    console.log("coinPriceElement", coinPriceElement);
 
     const coinAmount = coins.find((c) => c.api === coinElement)?.amount;
-    //console.log("coinAmount", coinAmount);
+    console.log("coinAmount", coinAmount);
 
     var coinValueCalc = coinAmount * coinPriceValue;
     var coinValueCalc2 = parseFloat(coinValueCalc).toFixed(2);
@@ -188,7 +227,12 @@ async function GetCryptoInfos() {
 
   var sumValue = parseFloat(totalPrice).toFixed(2);
   const totalPriceElement = document.getElementById("paraCoinPrices");
-  totalPriceElement.innerText = "CHF " + sumValue;
+  totalPriceElement.innerText = `CHF ${sumValue}\n (Pro Person: CHF ${(
+    sumValue / 3
+  ).toFixed(2)})`;
+
+  //const paraCoinPricesFooter = document.getElementById("paraCoinPricesFooter");
+  //paraCoinPricesFooter.innerText = "CHF " + (sumValue / 3).toFixed(2);
 
   var investment = 1950;
   var percentageValue = (sumValue / investment) * 100 - 100;
@@ -197,7 +241,7 @@ async function GetCryptoInfos() {
 }
 
 async function RefreshData() {
-  resetPriceValue("...",true);
+  resetPriceValue("...", true);
   await GetCryptoInfos();
 }
 
@@ -207,5 +251,4 @@ async function RunMainScript() {
   await RefreshData();
 }
 
-// Funktion im globalen Scope verfügbar machen
-window.RefreshData = RefreshData;
+
