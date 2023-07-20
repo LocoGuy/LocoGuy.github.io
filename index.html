@@ -26,17 +26,26 @@
       integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
       crossorigin="anonymous"
     ></script>
-    <div class="card-group" id="card-group"></div>
 
-    <div class="row text-center">
+    <div class="card-container m-3" id="card-group">
+
+    </div>
+
+    <div class="row text-center align-items-center">
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card solid">
           <div class="card-body">
             <h5 class="card-title">Total</h5>
             <p class="card-text" id="paraCoinPrices"></p>
           </div>
+         <!-- <div class="card-footer">
+            <h5 class="card-title">Pro Person</h5>
+            <p class="card-text" id="paraCoinPricesFooter"></p>
+          </div>
+          -->
         </div>
       </div>
+
       <div class="col-sm-6 mb-3 mb-sm-0">
         <div class="card" id="profitCard">
           <div class="card-body">
@@ -46,6 +55,8 @@
         </div>
       </div>
     </div>
+
+
     <div class="row mx-auto m-3" style="width: 25%">
       <button
         id="buttonRefresh"
@@ -54,5 +65,8 @@
         <i id="refreshIcon" class="fa fa-refresh" style="color: #ffffff"></i>
       </button>
     </div>
+
+
+
   </body>
 </html>
