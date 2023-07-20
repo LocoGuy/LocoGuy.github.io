@@ -23,9 +23,9 @@ function initCoins() {
     api: "polkadot",
     amount: 15,
     imgUrl:
-    "https://assets.coingecko.com/coins/images/12171/small/polkadot.png",
+      "https://assets.coingecko.com/coins/images/12171/small/polkadot.png",
   });
-  
+
   coins.push({
     name: "ETH",
     api: "ethereum",
@@ -45,27 +45,26 @@ function initCards() {
   const coinsDiv = document.getElementById("card-group");
   coinsDiv.innerHTML = "";
 
-  for (var i = 0; i < coins.length; i += 2) {
-    var row = document.createElement("div");
-    row.className = "row justify-content-center";
+  for (let i = 0; i < coins.length; i++) {
+    if (i % 3 === 0) {
+      var rowDiv = document.createElement("div");
+      rowDiv.className = "row justify-content-center";
+      coinsDiv.appendChild(rowDiv);
+    }
 
-    // Fügen Sie zwei Karten hinzu (wenn es noch zwei gibt), ansonsten nur eine
-    for (var j = 0; j < 2 && i + j < coins.length; ++j) {
-      var coin = coins[i+j];
-      // Erstellen Sie die Karte
-      var col = document.createElement('div');
-      col.className = 'col-sm-6';
+    let row = coinsDiv.getElementsByClassName("row")[Math.floor(i / 3)];
 
-      var coinCard = createCoinCard(coin);
-      /* Fügen Sie hier Ihren Karteninhalt hinzu, z. B. card.textContent = cards[i+j].text; */
+    var coin = coins[i];
+    // Erstellen Sie die Karte
+    var col = document.createElement("div");
+    col.className = "col-sm-4";
 
-      // Fügen Sie die Karte zur Spalte und die Spalte zur Zeile hinzu
-      col.appendChild(coinCard);
-      row.appendChild(col);
-  }
+    var coinCard = createCoinCard(coin);
+    /* Fügen Sie hier Ihren Karteninhalt hinzu, z. B. card.textContent = cards[i+j].text; */
 
-    // Fügen Sie die Zeile zum Container hinzu
-    coinsDiv.appendChild(row);
+    // Fügen Sie die Karte zur Spalte und die Spalte zur Zeile hinzu
+    col.appendChild(coinCard);
+    row.appendChild(col);
   }
 
   /*coins.forEach((coinData) => {
@@ -111,7 +110,6 @@ function createCoinCard(coinData) {
 
   return cardDiv;
 }
-
 
 function resetPriceValue(innerText, isRefresh) {
   if (isRefresh) {
@@ -250,5 +248,3 @@ async function RunMainScript() {
   initCards();
   await RefreshData();
 }
-
-
