@@ -51,6 +51,25 @@ function initCards() {
   });
 }
 
+function resetPriceValue(innerText, isRefresh) {
+  let pElements = document.getElementsByTagName("p");
+  //let selectedDivs = [];
+  for (let i = 0; i < pElements.length; i++) {
+    if (pElements[i].id.startsWith("coinPrice-")) {
+      //console.log(selectedDivs);
+      if(isRefresh)
+      {
+        pElements[i].innerHTML = "";
+        const spinner = document.createElement("i");  
+        spinner.className = "fa fa-spinner fa-spin"
+        pElements[i].appendChild(spinner);
+      }
+      //selectedDivs.push(divs[i]);
+    }
+  }
+  //console.log(selectedDivs);
+}
+
 function createCoinCard(coinData) {
   const cardDiv = document.createElement("div");
   cardDiv.className = "card coin-card mb-3 text-center";
@@ -85,21 +104,23 @@ function createCoinCard(coinData) {
   return cardDiv;
 }
 
-function SetProfitLine(textToAppend, intValue) {
+function SetProfitLine(text, intValue) {
+  var profitCard = document.getElementById("profitCard");
   var profitElement = document.getElementById("profitElement");
-  var currentText = profitElement.innerText;
-  profitElement.innerText = currentText + textToAppend;
-  profitElement.style.color = "green";
+  profitElement.innerText = text;
 
-  if (intValue < 0) profitElement.style.color = "red";
+  if (intValue < 0) {
+    //profitElement.style.color = "red";
+    profitCard.classList.remove("bg-success");
+    profitCard.classList.add("bg-danger");
+  } else {
+    //profitElement.style.color = "green";
+    profitCard.classList.remove("bg-danger");
+    profitCard.classList.add("bg-success");
+  }
 }
 
-function ClearParaCoinPrices() {
-  document.getElementById("paraCoinPrices").innerText = "";
-  document.getElementById("profitElement").innerText = "";
-}
-
-async function CallApiUrlAndGetJson(apiUrl) {
+async function fetchJson(apiUrl) {
   //console.log(apiUrl);
   let response = await fetch(apiUrl);
   if (response.ok) {
@@ -110,15 +131,9 @@ async function CallApiUrlAndGetJson(apiUrl) {
   }
   return "";
 }
-
-function GetPrice2(json, coinInfo, currency) {
-  var coinPrice = json[coinInfo][currency];
-  return coinPrice;
-}
-
 function sleep(ms) {
-    return new Promise((resolve) => setTimeout(resolve, ms));
-  }
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 async function GetCryptoInfos() {
   var refreshButton = document.getElementById("refreshIcon");
@@ -144,7 +159,7 @@ async function GetCryptoInfos() {
 
   //console.log("apiUrl", apiUrl);
 
-  var jsonData = await CallApiUrlAndGetJson(apiUrl);
+  var jsonData = await fetchJson(apiUrl);
   //console.log("jsonData", jsonData);
 
   const timeElapsed = Date.now();
@@ -153,7 +168,7 @@ async function GetCryptoInfos() {
   var totalPrice = 0;
 
   selectedCoins.forEach((coinElement) => {
-    var coinPriceValue = GetPrice2(jsonData, coinElement, "chf");
+    var coinPriceValue = jsonData[coinElement]["chf"];
     //console.log("coinPriceValue", coinPriceValue);
 
     var coinPriceElement = document.getElementById(`coinPrice-${coinElement}`);
@@ -168,7 +183,6 @@ async function GetCryptoInfos() {
     totalPrice += coinValueCalc;
   });
 
-  ClearParaCoinPrices();
   var sumValue = parseFloat(totalPrice).toFixed(2);
   const totalPriceElement = document.getElementById("paraCoinPrices");
   totalPriceElement.innerText = "CHF " + sumValue;
@@ -177,12 +191,17 @@ async function GetCryptoInfos() {
   var percentageValue = (sumValue / investment) * 100 - 100;
   SetProfitLine(parseFloat(percentageValue).toFixed(2) + " %", percentageValue);
 
+  resetPriceValue("",false);
   refreshButton.classList.remove("fa-spin");
+}
+
+async function RefreshData() {
+  resetPriceValue("...",true);
+  await GetCryptoInfos();
 }
 
 async function RunMainScript() {
   initCoins();
   initCards();
-  //console.log(coins);
-  await GetCryptoInfos();
+  await RefreshData();
 }
