@@ -193,8 +193,6 @@ async function GetCryptoInfos() {
   var investment = 1950;
   var percentageValue = (sumValue / investment) * 100 - 100;
   SetProfitLine(parseFloat(percentageValue).toFixed(2) + " %", percentageValue);
-
-  resetPriceValue("",false);
   refreshButton.classList.remove("fa-spin");
 }
 
@@ -208,3 +206,6 @@ async function RunMainScript() {
   initCards();
   await RefreshData();
 }
+
+// Funktion im globalen Scope verfügbar machen
+window.RefreshData = RefreshData;
